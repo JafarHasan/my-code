@@ -1,0 +1,193 @@
+
+/*import java.util.*;
+import java.util.Scanner;
+import java.util.Stack;
+//Infix Evaluation
+class Conversion{
+    public static int precedence(char ch){
+        if(ch=='+'|| ch=='-'){
+            return 1;
+        }
+        else if(ch=='*'||ch=='/'){
+            return 2;
+        }
+        else if(ch=='^')
+            return 3;
+        return -1;
+    }
+    public static int eval(int n1,int n2,char op){
+        if(op=='+'){
+            return n1+n2;
+        }
+        else if(op=='-'){
+            return n1-n2;
+        }
+        else if(op=='*'){
+            return n1*n2;
+        }
+        else if(op=='/'){
+             if (n2 == 0)
+                throw new
+                UnsupportedOperationException(
+                      "Cannot divide by zero");
+            return n1/n2;
+        }
+        else if(op=='^'){
+            return (int)Math.pow(n1,n2);
+        }
+        return 0;//never happened
+    }
+    public static void solveInfixValue(String s){
+        int n=s.length();
+        Stack<Integer> num=new Stack<>(); //for num
+        Stack<Character> optr=new Stack<>();//for +,-,etc
+
+        for(int i=0;i<n;i++){
+            char ch=s.charAt(i);
+            if(ch=='('){
+                optr.push(ch);
+            }
+            else if(ch>='0' && ch<='9'){
+                num.push(ch-'0');//char to int -0
+            }
+            else if(ch==')'){
+                while(optr.peek()!='('){
+                    char op=optr.pop();//getting operator
+                    int v2=num.pop();//2nd no
+                    int v1=num.pop();//1st no
+
+                    int res=eval(v1,v2,op);
+                    num.push(res);
+                }
+                optr.pop();//popping ( also
+            }
+            else if(ch=='+'||ch=='-'||ch=='*'||ch=='/'||ch=='^'){
+                while(optr.size()>0 && optr.peek()!='(' && precedence(ch)<=precedence(optr.peek())){
+                    char op=optr.pop();//getting operator
+                    int v2=num.pop();//2nd no
+                    int v1=num.pop();//1st no
+
+                    int res=eval(v1,v2,op);
+                    num.push(res);
+                }
+                optr.push(ch);//pushing currect operator
+            }
+        }
+        //String is end but stack still conatins some expression
+        while(optr.size()>0){
+            char op=optr.pop();//getting operator
+            int v2=num.pop();//2nd no
+            int v1=num.pop();//1st no
+
+            int res=eval(v1,v2,op);
+            num.push(res);
+        }
+        System.out.print(num.pop());
+    }
+    public static void main(String...args){
+        Scanner sc=new Scanner(System.in);
+        String s=sc.nextLine();
+        solveInfixValue(s);
+    }
+}*/
+
+/*
+import java.util.*;
+import java.util.Scanner;
+import java.util.Stack;
+//postfix Evaluation
+class Conversion{
+    public static int eval(int n1,int n2,char op){
+        if(op=='+'){
+            return n1+n2;
+        }
+        else if(op=='-'){
+            return n1-n2;
+        }
+        else if(op=='*'){
+            return n1*n2;
+        }
+        else if(op=='/'){
+             if (n2 == 0)
+                throw new
+                UnsupportedOperationException(
+                      "Cannot divide by zero");
+            return n1/n2;
+        }
+        else if(op=='^'){
+            return (int)Math.pow(n1,n2);
+        }
+        return 0;//never happened
+    }
+    public static void solvePostfixValue(String s){
+        int n=s.length();
+        Stack<Integer> num=new Stack<>(); //for num
+        for(int i=0;i<n;i++){
+            char ch=s.charAt(i);
+           if(ch=='+'||ch=='-'||ch=='*'||ch=='/'||ch=='^'){
+                int v2=num.pop();//2nd no
+                int v1=num.pop();//1st no
+                int res=eval(v1,v2,ch);
+                num.push(res);
+            }
+            else{
+                num.push(ch-'0');
+            }
+        }
+        System.out.print(num.peek());
+    }
+    public static void main(String...args){
+        Scanner sc=new Scanner(System.in);
+        String s=sc.nextLine();
+        solvePostfixValue(s);
+    }
+}*/
+
+import java.util.*;
+import java.util.Scanner;
+import java.util.Stack;
+
+//prefix Evaluation
+class Conversion {
+    public static int eval(int n1, int n2, char op) {
+        if (op == '+') {
+            return n1 + n2;
+        } else if (op == '-') {
+            return n1 - n2;
+        } else if (op == '*') {
+            return n1 * n2;
+        } else if (op == '/') {
+            if (n2 == 0)
+                throw new UnsupportedOperationException(
+                        "Cannot divide by zero");
+            return n1 / n2;
+        } else if (op == '^') {
+            return (int) Math.pow(n1, n2);
+        }
+        return 0;// never happened
+    }
+
+    public static void solvePrefixValue(String s) {
+        int n = s.length();
+        Stack<Integer> num = new Stack<>();
+        for (int i = n - 1; i >= 0; i--) {
+            char ch = s.charAt(i);
+            if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^') {
+                int v1 = num.pop();
+                int v2 = num.pop();
+                int res = eval(v1, v2, ch);
+                num.push(res);
+            } else {
+                num.push(ch - '0');
+            }
+
+        }
+        System.out.print(num.peek());
+    }
+
+    public static void main(String... args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine();
+        solvePrefixValue(s);
+    }
+}
