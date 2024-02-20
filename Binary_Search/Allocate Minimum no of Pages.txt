@@ -1,0 +1,66 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Solution {
+	public boolean isPossible(int[] A,int n,int B,long mid){
+         int cnt=1;//starting with 1 student
+         int pageSum=0;
+
+         for(int i=0;i<n;i++){
+             if(pageSum+A[i]<=mid){
+                 pageSum+=A[i];  //how many pages can be allocated to 1 student
+                 
+             }else{
+                 cnt++;
+                 if(cnt>B || A[i]>mid){ //if no of Student ie cnt is greater then stuent
+                     //or A[i]> mid  then we cant allocate
+                     return false;
+                 }
+                 pageSum=A[i];
+             }
+             if(cnt>B) return false;
+         }
+         return true;
+     }
+     public long MinimumPages(int[] A, int B) {
+         if(B>A.length) return -1l;
+         long low = Integer.MIN_VALUE,sum=0l;
+        for(int i=0;i<A.length;i++){
+            low = Math.max(low, A[i]);  // find the maximum element in the array
+        }
+         
+         for(int ele:A){
+             sum+=ele;
+         }
+        long hi=sum;
+        long ans=-1l;
+         while(low<=hi){
+             long mid=low+(hi-low)/2;
+
+             if(isPossible(A,A.length,B,mid)){
+                 ans=mid;
+                 hi=mid-1;
+             }
+             else{
+                 low=mid+1;
+             }
+         }
+         return ans;
+     }
+}
+
+class Main {
+    public static void main (String[] args) {
+        Scanner sc = new Scanner(System.in);
+	    
+	    int N = sc.nextInt();
+	    int B = sc.nextInt();
+        int[] A = new int[N];
+        for(int i=0;i<N;i++)
+            A[i] = sc.nextInt();
+
+        Solution Obj = new Solution(); 
+        System.out.println(Obj.MinimumPages(A,B));
+	}
+}
