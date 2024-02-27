@@ -1,0 +1,71 @@
+import java.io.*;
+import java.util.*;
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+        
+        int q=sc.nextInt();
+        sc.nextLine();
+        TextEditor obj=new TextEditor();
+        for(int i=0;i<q;i++)
+        {
+            // String[] s = sc.nextLine().split(" "); 
+            String s=sc.nextLine();
+            if(s.equals("UNDO"))
+            {
+                obj.UNDO();
+            }
+            else if(s.equals("REDO"))
+            {
+                obj.REDO();
+            }
+            else if(s.equals("READ"))
+            {
+               obj.READ();
+
+            }
+            else
+            {
+                char ch=s.charAt(6);
+                obj.WRITE(ch);
+            }
+        }
+    }
+}
+
+class TextEditor{
+    // your code here
+    static Stack<Character> redo=new Stack<>();
+    static Stack<Character> undo=new Stack<>();
+    static StringBuilder doc=new StringBuilder("");
+    static void WRITE(char X)
+    {
+        undo.push(X);
+        doc.append(X);
+    }
+    
+    static void UNDO()
+    {
+        if(!undo.isEmpty()){
+            char ch=undo.pop();
+            doc.deleteCharAt(doc.length()-1);
+            redo.push(ch);
+        }
+    }
+    static void REDO()
+    {
+        if (!redo.isEmpty()) {
+            char ch=redo.pop();
+            doc.append(ch);
+            undo.push(ch);
+        }
+    }
+
+    static void READ()
+    {
+        System.out.print(doc+" ");
+    }
+
+}
