@@ -1,0 +1,61 @@
+import java.io.*;
+import java.util.*;
+import java.util.Scanner;
+class Solution {
+    Stack<String> undo=new Stack<>();
+    Stack<String> redo=new Stack<>();
+    StringBuilder str=new StringBuilder("");
+    //NO 1
+    public void APPEND(String s){
+        undo.push(str.toString());
+        str.append(s);
+        
+    }
+    //NO 2
+    public void PRINT(int n){
+        if(n<0 || n>str.length())
+            return;
+        System.out.println(str.charAt(n-1));
+    }
+    //NO 3
+    public void DELETE(int n){
+        if(n<0 || n>str.length()) return;
+        undo.push(str.toString());
+        str.delete((str.length()-n),str.length());
+    }
+    //NO 4
+    public void UNDO(){
+        if(undo.size()==0) return;
+        str=new StringBuilder(undo.pop());
+    }
+    public void SimpleTextEditor() {
+        Scanner sc=new Scanner(System.in);
+        int q=sc.nextInt();
+        for(int i=1;i<=q;i++){
+            int n=sc.nextInt();
+            if(n==1){
+                String s=sc.next();
+                APPEND(s);
+            }
+            else if(n==3){
+                int del=sc.nextInt();
+                PRINT(del);
+            }
+            else if(n==2){
+                int printChar=sc.nextInt();
+                DELETE(printChar);
+            }
+            else if(n==4){
+                UNDO();
+            }
+        }
+        
+    }
+}
+
+public class Main {
+    public static void main(String args[]) {
+        Solution ob = new Solution(); 
+        ob.SimpleTextEditor();
+    }
+}
